@@ -3,6 +3,15 @@
 char chr;
 uint32_t color = 0;
 
+#define IDLE 0
+#define NORMAL 0xff
+#define VISUAL 0xffff00
+#define SELECT 0xff00ff
+#define INSERT 0xffffffff
+#define CMD 0xff0000
+#define EX 0xff1000
+#define TERMINAL 0x00ff00
+
 Adafruit_NeoPixel strip(1, 6, NEO_GRB + NEO_KHZ800);
 
 void setup() {
@@ -24,25 +33,28 @@ void loop() {
 
         switch (chr) {
           case '0':
-            color = 255;
+            color = IDLE;
             break;
           case '1':
-            color = 255 << 8;
+            color = NORMAL;
             break;
           case '2':
-            color = 255 << 16;
+            color = VISUAL;
             break;
           case '3':
-            color = (255 << 8) | 255;
+            color = SELECT;
             break;
           case '4':
-            color = (255 << 8) | (255 << 16);
+            color = INSERT;
             break;
           case '5':
-            color = (255 << 16) | 255;
+            color = CMD;
             break;
           case '6':
-            color = -1;
+            color = EX;
+            break;
+          case '7':
+            color = TERMINAL;
             break;
           default:
             break;
