@@ -42,19 +42,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   command = 'LedMode 6'
 })
 
-vim.api.nvim_create_autocmd("FocusLost", {
-  pattern = { '*' },
-  group = group_id,
-  command = 'LedMode 0'
-})
-
-vim.api.nvim_create_autocmd("VimLeave", {
-  pattern = { '*' },
-  group = group_id,
-  command = 'LedMode 0'
-})
-
-vim.api.nvim_create_autocmd("VimSuspend", {
+vim.api.nvim_create_autocmd({"FocusLost", "VimLeave", "VimSuspend"}, {
   pattern = { '*' },
   group = group_id,
   command = 'LedMode 0'
@@ -63,8 +51,8 @@ vim.api.nvim_create_autocmd("VimSuspend", {
 vim.api.nvim_create_autocmd("FocusGained", {
   pattern = { '*' },
   group = group_id,
-  callback = function()
-    local mode = vim.api.nvim_get_mode().mode
-    print("well we fucked up: " .. mode)
+  callback = function(args)
+    print("stored mode is: "..vim.api.nvim_win_get_var(0, 'LedMode'))
+    vim.cmd("LedMode "..vim.api.nvim_win_get_var(0, 'LedMode'))
   end
 })
