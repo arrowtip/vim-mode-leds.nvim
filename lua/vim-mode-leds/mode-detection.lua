@@ -1,7 +1,8 @@
 local group_id = vim.api.nvim_create_augroup("vim-mode-leds", { clear = true })
 
+-- normal
 vim.api.nvim_create_autocmd("ModeChanged", {
-  pattern = { '*:n' },
+  pattern = { '*:n*' },
   group = group_id,
   callback = function ()
     vim.cmd('LedMode 1')
@@ -9,8 +10,9 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end
 })
 
+-- visual
 vim.api.nvim_create_autocmd("ModeChanged", {
-  pattern = { '*:v' },
+  pattern = { '*:[vV\x16]*' },
   group = group_id,
   callback = function ()
     vim.cmd('LedMode 2')
@@ -18,8 +20,9 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end
 })
 
+-- select
 vim.api.nvim_create_autocmd("ModeChanged", {
-  pattern = { '*:s' },
+  pattern = { '*:[sS\x13]*' },
   group = group_id,
   callback = function ()
     vim.cmd('LedMode 3')
@@ -27,8 +30,9 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end
 })
 
+-- insert
 vim.api.nvim_create_autocmd("ModeChanged", {
-  pattern = { '*:i' },
+  pattern = { '*:i*' },
   group = group_id,
   callback = function ()
     vim.cmd('LedMode 4')
@@ -36,6 +40,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end
 })
 
+-- cmdline
 vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:c' },
   group = group_id,
@@ -45,6 +50,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end
 })
 
+-- ex
 vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:cv' },
   group = group_id,
@@ -54,6 +60,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end
 })
 
+-- terminal
 vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:t' },
   group = group_id,
@@ -63,6 +70,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   end
 })
 
+-- idle
 vim.api.nvim_create_autocmd({"FocusLost", "VimLeave", "VimSuspend"}, {
   pattern = { '*' },
   group = group_id,
