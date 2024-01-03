@@ -1,6 +1,5 @@
 local M = {}
 
-print("hello from lua init")
 function M.setup(opts)
   opts = opts or {}
   if opts.path_to_leds then
