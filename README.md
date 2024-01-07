@@ -10,10 +10,10 @@ require("vim-mode-leds").setup({ path_to_leds = "path/to/led/device/file" })
 
 ### Troubleshooting:
 Check the permission of the device. 
-You device should be writable from users
-This is a easy fix
+Your device should be writable by the user.
+This is an easy fix:
 ```
-sudo chmod 777 /dev/ttyACM0
+$ chmod g+w /dev/ttyACM0
 ```
 
 
