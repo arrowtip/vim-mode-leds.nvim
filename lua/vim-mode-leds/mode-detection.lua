@@ -1,26 +1,12 @@
 local group_id = vim.api.nvim_create_augroup("vim-mode-leds", { clear = true })
-
-vim.api.nvim_create_autocmd("WinEnter", {
-  pattern = { "*" },
-  group = group_id,
-  callback = function ()
-    if vim.w.vml_store == nil then
-      vim.api.nvim_win_set_var(0, "vml_store", 0)
-      vim.cmd("echo 'set var'")
-    else
-      vim.api.nvim_win_set_var(0, "vml_store", 42)
-    end
-  end
-})
-
-
+local mother = {}
 -- normal
 vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:n*' },
   group = group_id,
   callback = function ()
-    vim.cmd('LedMode 1')
-    vim.api.nvim_win_set_var(0, 'VimModeLeds_ModeStore', 1)
+    mother.set_led(mother.colors.normal)
+    vim.w.vml_store = mother.colors.normal
   end
 })
 
@@ -29,8 +15,8 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:[vV\x16]*' },
   group = group_id,
   callback = function ()
-    vim.cmd('LedMode 2')
-    vim.api.nvim_win_set_var(0, 'VimModeLeds_ModeStore', 2)
+    mother.set_led(mother.colors.visual)
+    vim.w.vml_store = mother.colors.visual
   end
 })
 
@@ -39,8 +25,8 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:[sS\x13]*' },
   group = group_id,
   callback = function ()
-    vim.cmd('LedMode 3')
-    vim.api.nvim_win_set_var(0, 'VimModeLeds_ModeStore', 3)
+    mother.set_led(mother.colors.select)
+    vim.w.vml_store = mother.colors.select
   end
 })
 
@@ -49,8 +35,8 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:i*' },
   group = group_id,
   callback = function ()
-    vim.cmd('LedMode 4')
-    vim.api.nvim_win_set_var(0, 'VimModeLeds_ModeStore', 4)
+    mother.set_led(mother.colors.insert)
+    vim.w.vml_store = mother.colors.insert
   end
 })
 
@@ -59,8 +45,8 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:c' },
   group = group_id,
   callback = function ()
-    vim.cmd('LedMode 5')
-    vim.api.nvim_win_set_var(0, 'VimModeLeds_ModeStore', 5)
+    mother.set_led(mother.colors.cmdline)
+    vim.w.vml_store = mother.colors.cmdline
   end
 })
 
@@ -69,8 +55,8 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:cv' },
   group = group_id,
   callback = function ()
-    vim.cmd('LedMode 6')
-    vim.api.nvim_win_set_var(0, 'VimModeLeds_ModeStore', 6)
+    mother.set_led(mother.colors.ex)
+    vim.w.vml_store = mother.colors.ex
   end
 })
 
@@ -79,8 +65,8 @@ vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:t' },
   group = group_id,
   callback = function ()
-    vim.cmd('LedMode 7')
-    vim.api.nvim_win_set_var(0, 'VimModeLeds_ModeStore', 7)
+    mother.sed_led(mother.colors.terminal)
+    vim.w.vml_store = mother.colors.terminal
   end
 })
 
@@ -89,15 +75,19 @@ vim.api.nvim_create_autocmd({"FocusLost", "VimLeave", "VimSuspend"}, {
   pattern = { '*' },
   group = group_id,
   callback = function()
-    vim.cmd('LedMode 0')
+    mother.set_led(mother.colors.idle)
   end
 })
 
 vim.api.nvim_create_autocmd("FocusGained", {
   pattern = { '*' },
   group = group_id,
-  -- command = 'LedMode'..vim.api.nvim_win_get_var(0, 'led_mode')
   callback = function ()
-    vim.cmd('LedMode '..vim.api.nvim_win_get_var(0, 'VimModeLeds_ModeStore'))
+    if vim.w.vml_store == nil then
+      mother.set_led(mother.colors.normal)
+      vim.w.vml_store = mother.colors.normal
+    else
+      mother.set_led(vim.w.vml_store)
+    end
   end
 })
