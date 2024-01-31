@@ -1,22 +1,18 @@
-local M = {}
+local M = { path_to_leds = "", colors = {} }
 
 function M.setup(opts)
-  opts = opts or {}
+  opts = opts or { colors = {}, path_to_leds = "/dev/ttyACM0" }
   opts.colors = opts.colors or {}
   M.path_to_leds = opts.path_to_leds or "/dev/ttyACM0"
-  if opts.colors then
-    M.colors.normal = opts.colors.normal or "\\x03"
-    M.colors.visual = opts.colors.visual or "\\x3c"
-    M.colors.select = opts.colors.select or "\\x0c"
-    M.colors.insert = opts.colors.insert or "\\xff"
-    M.colors.cmdline = opts.colors.cmdline or "\\x34"
-    M.colors.ex = opts.colors.ex or "\\x30"
-    M.colors.terminal = opts.colors.terminal or "\\x33"
-    M.colors.idle = opts.colors.idle or "\\x00"
-  end
+  M.colors.normal = opts.colors.normal or "\\x03"
+  M.colors.visual = opts.colors.visual or "\\x3c"
+  M.colors.select = opts.colors.select or "\\x0c"
+  M.colors.insert = opts.colors.insert or "\\xff"
+  M.colors.cmdline = opts.colors.cmdline or "\\x30"
+  M.colors.ex = opts.colors.ex or "\\x34"
+  M.colors.terminal = opts.colors.terminal or "\\x33"
+  M.colors.idle = opts.colors.idle or "\\x00"
 end
-
---require('vim-mode-leds.mode-detection')
 
 local function file_exists(name)
    local f=io.open(name,"r")
@@ -35,10 +31,12 @@ vim.api.nvim_create_user_command(
   'SetLED',
   function(opts)
     M.set_led(opts.fargs[1])
-  end,
-  {
+  end, {
     nargs = 1,
     desc = "Set LEDs to given color"
   }
 )
+
+require('vim-mode-leds.mode-detection').add_autocmds(M.colors, M.set_led)
+
 return M
