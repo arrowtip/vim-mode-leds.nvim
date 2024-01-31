@@ -1,5 +1,17 @@
 local group_id = vim.api.nvim_create_augroup("vim-mode-leds", { clear = true })
 
+vim.api.nvim_create_autocmd("WinEnter", {
+  patter = { "*" },
+  group = group_id,
+  callback = function ()
+    if vim.w.vml_store == nil then
+      vim.api.nvim_win_set_var(0, "vml_store")
+      vim.cmd("echo 'set var'")
+    end
+  end
+})
+
+
 -- normal
 vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = { '*:n*' },
@@ -74,7 +86,9 @@ vim.api.nvim_create_autocmd("ModeChanged", {
 vim.api.nvim_create_autocmd({"FocusLost", "VimLeave", "VimSuspend"}, {
   pattern = { '*' },
   group = group_id,
-  command = 'LedMode 0'
+  callback = function()
+    vim.cmd('LedMode 0')
+  end
 })
 
 vim.api.nvim_create_autocmd("FocusGained", {
@@ -82,6 +96,6 @@ vim.api.nvim_create_autocmd("FocusGained", {
   group = group_id,
   -- command = 'LedMode'..vim.api.nvim_win_get_var(0, 'led_mode')
   callback = function ()
-    vim.cmd('LedMode'..vim.api.nvim_win_get_var(0, 'VimModeLeds_ModeStore'))
+    vim.cmd('LedMode '..vim.api.nvim_win_get_var(0, 'VimModeLeds_ModeStore'))
   end
 })
