@@ -5,10 +5,10 @@ vim.api.nvim_create_autocmd("WinEnter", {
   group = group_id,
   callback = function ()
     if vim.w.vml_store == nil then
-      vim.api.nvim_win_set_var(0, "vml_store")
+      vim.api.nvim_win_set_var(0, "vml_store", 0)
       vim.cmd("echo 'set var'")
     else
-      vim.api.nvim_win_set_var(42, "vml_store")
+      vim.api.nvim_win_set_var(0, "vml_store", 42)
     end
   end
 })
