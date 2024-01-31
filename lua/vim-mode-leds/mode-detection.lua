@@ -1,7 +1,7 @@
 local group_id = vim.api.nvim_create_augroup("vim-mode-leds", { clear = true })
 
 vim.api.nvim_create_autocmd("WinEnter", {
-  patter = { "*" },
+  pattern = { "*" },
   group = group_id,
   callback = function ()
     if vim.w.vml_store == nil then
