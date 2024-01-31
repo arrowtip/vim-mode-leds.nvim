@@ -14,17 +14,9 @@ function M.setup(opts)
   M.colors.idle = opts.colors.idle or "\\x00"
 end
 
-local function file_exists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
-end
-
 function M.set_led(chr)
-  if file_exists(M.path_to_leds) then
-    local str = 'printf "' .. chr .. '" > ' .. M.path_to_leds
-    print(str)
-    vim.fn.jobstart(str)
-  end
+  local str = 'printf "' .. chr .. '" > ' .. M.path_to_leds
+  pcall(vim.fn.jobstart(str))
 end
 
 vim.api.nvim_create_user_command(
